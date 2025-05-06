@@ -9,6 +9,10 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // 1 {$ php artisan migrate } para enviar o modelo para mysql
+    // 2 depois use o comando {$ php artisan make:seed UsersTableSeeder } para criar um usuario adm
+    // 3 e opcional  {$ php artisan make:model User -f} para que o atributo senha e token seja protegindo
+    // 4 {$ php artisan db:seed --class=UsersTableSeeder } para adcionar adm no mysql
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
