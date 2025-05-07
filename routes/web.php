@@ -14,4 +14,20 @@ Route::get('/',function () {
     }
 });
 
+Route::get('/test', function(){
+    echo 'teste';
+})->name('test')->middleware('auth');
+
 Route::get('/home', [MainController::class, 'home'])->name('home');
+
+Route::get('/login', function () {
+    echo 'formulario de ingreso';
+})->name('login');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', function () {
+        echo 'formulario de registro';
+    })->name('register');
+});
+
+Route::get('/registro',function(){ echo 'formulario de registro';})->name('registro')->middleware('guest');
