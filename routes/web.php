@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
@@ -12,3 +13,5 @@ Route::get('/',function () {
         echo "error: " . $th->getMessage();
     }
 });
+
+Route::get('/home', [MainController::class, 'home'])->name('home');
