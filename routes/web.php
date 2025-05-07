@@ -10,6 +10,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [MainController::class, 'home'])->name('home');
+    Route::get('/home', [MainController::class, 'home'])->name('home');
 });
 
