@@ -1,3 +1,4 @@
+
 <div class="container-fluid bg-black">
     <div class="row">
         <div class="col p-3">
@@ -6,7 +7,8 @@
         <div class="col p-3 text-end align-content-center">
             <div class="dropdown">
                 <a href="#" class="btn btn-primary dropdown-toggle px-5" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-user me-3"></i>[username]
+                    <i class="fas fa-user me-3"></i>
+                    [username]
                 </a>
                 <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="#">Profile</a></li>

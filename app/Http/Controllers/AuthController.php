@@ -16,9 +16,6 @@ class AuthController extends Controller
 
     public function  authenticate(Request $request): RedirectResponse
     {
-        //$credentials = $request->only('email', 'password');
-        echo "Authenticate...";
-
         //  form validacao
         $credentials = $request->validate(
             [
@@ -77,6 +74,28 @@ class AuthController extends Controller
 
         // redirecionar
         return redirect()->intended(route('home'));
+    }
+
+    public function register()
+    {
+        return view('auth.register');
+    }
+
+    public function store_user(Request $request): void
+    {
+        //  form validacao
+        $request->validate(
+            [
+                'username' => 'required|min:4|max:30|unique:users,username',
+                'email' => 'required|email|unique:users,email',
+
+            ],
+
+        );
+
+        echo 'fim';
+        // redirecionar
+        //return redirect()->intended(route('home'));
     }
 
     public function logout(): RedirectResponse {

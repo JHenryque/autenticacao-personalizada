@@ -25,9 +25,9 @@
 
                         <div class="row mt-4">
                             <div class="col">
-{{--                                <div class="mb-3">--}}
-{{--                                    <a href="#">Não tenho conta de usuário</a>--}}
-{{--                                </div>--}}
+                                <div class="mb-3">
+                                    <a href="{{route('register')}}">Não tenho conta de usuário</a>
+                                </div>
 {{--                                <div>--}}
 {{--                                    <a href="#">Esqueci a minha senha</a>--}}
 {{--                                </div>--}}
