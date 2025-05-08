@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,7 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function  authenticate(Request $request)
+    public function  authenticate(Request $request): RedirectResponse
     {
         //$credentials = $request->only('email', 'password');
         echo "Authenticate...";
@@ -76,6 +77,12 @@ class AuthController extends Controller
 
         // redirecionar
         return redirect()->intended(route('home'));
+    }
+
+    public function logout(): RedirectResponse {
+        // logout
+        Auth::logout();
+        return redirect()->route('login');
     }
 
 }
