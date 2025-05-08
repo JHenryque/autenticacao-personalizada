@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
@@ -76,7 +78,7 @@ class AuthController extends Controller
         return redirect()->intended(route('home'));
     }
 
-    public function register()
+    public function register(): View
     {
         return view('auth.register');
     }
@@ -88,12 +90,34 @@ class AuthController extends Controller
             [
                 'username' => 'required|min:4|max:30|unique:users,username',
                 'email' => 'required|email|unique:users,email',
-
+                'password' => 'required|min:8|max:30|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                'password_confirmation' => 'required|same:password',
             ],
-
+            [
+                'username.required' => 'campo :attribute e obrigatorio',
+                'username.unique' => 'o :attribute ja existe por outro Usuário ',
+                'username.min' => 'Nome no campo :attribute precisa ter pelo menos :min caracteres ',
+                'username.max' => 'Nome no campo :attribute precisa ter no maximo :max caracteres ',
+                'email.required' => 'campo :attribute e obrigatorio',
+                'email.email' => 'O :attribute deve ser um endereço de :attribute Valido',
+                'email.unique' => 'o :attribute ja existe por outro Usuário ',
+                'password.required' => 'campo :attribute e obrigatorio',
+                'password.min' => ' O :attribute precisa ter pelo menos :min numero ',
+                'password.max' => 'O :attribute precisa ter no maximo :max numero ',
+                'password.regex' => 'A :attribute deve conter pelo menos uma letra maiúscula, uma letra minúscula, e um numero ',
+                'password_confirmation.required' => 'O campo :attribute e obrigatorio',
+                'password_confirmation.same' => 'A confirmação da senha não corresponde igual a senha .',
+            ]
         );
 
-        echo 'fim';
+        // criar um novo usuário definindo um token de verificação de email
+        $user = new User();
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->token = Str::random(64);
+
+        dd($user);
         // redirecionar
         //return redirect()->intended(route('home'));
     }
