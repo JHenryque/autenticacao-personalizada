@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewUserConfirmation;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -83,7 +85,7 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function store_user(Request $request): void
+    public function store_user(Request $request): RedirectResponse|View
     {
         //  form validacao
         $request->validate(
@@ -117,9 +119,30 @@ class AuthController extends Controller
         $user->password = bcrypt($request->password);
         $user->token = Str::random(64);
 
-        dd($user);
-        // redirecionar
-        //return redirect()->intended(route('home'));
+        // condiçao quando ouver uma flux ex: sera uma mensagem confirmaçao: php artisan make:mail NewUserConfirmation
+        // gera link
+        $confirmation_link = route('new_user_confirmation', ['token' => $user->token]);
+
+        // enviar email
+        $result = Mail::to($user->email)->send(new NewUserConfirmation($user->username, $confirmation_link));
+
+        // verificar se o mail foi enviado com sucesso
+       if (!$result) {
+           return back()->withInput()->with([
+                'server_error' => 'Ocorreu um error ao enviar o mail de confirmaçao'
+           ]);
+       }
+
+        // guardar user
+        $user->save();
+
+        // apresentar view de sucesso
+        return view('auth.email_sent', ['email' => $user->email]);
+    }
+
+    public function new_user_confirmation($token): void
+    {
+        echo "new_user_confirmation";
     }
 
     public function logout(): RedirectResponse {
