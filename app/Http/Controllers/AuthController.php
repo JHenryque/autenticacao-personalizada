@@ -168,4 +168,12 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
+    public function profile(): View {
+        return view('auth.profile');
+    }
+
+    public function change_password(Request $request): View {
+        dd($request->all());
+    }
+
 }
