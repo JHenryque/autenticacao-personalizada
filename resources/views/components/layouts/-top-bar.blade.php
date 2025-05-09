@@ -2,7 +2,7 @@
 <div class="container-fluid bg-black">
     <div class="row">
         <div class="col p-3">
-            <img src="[logo]" alt="Logo">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="Logo">
         </div>
         <div class="col p-3 text-end align-content-center">
             <div class="dropdown">

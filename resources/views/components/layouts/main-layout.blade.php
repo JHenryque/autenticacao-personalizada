@@ -13,6 +13,10 @@
 
 <body>
 
+    @auth
+        <x-layouts.-top-bar />
+    @endauth
+
  {{ $slot }}
 
 <script src="{{ asset('assets/bootstrap/bootstrap.bundle.min.js')}}"></script>
