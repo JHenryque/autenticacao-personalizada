@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\NewUserConfirmation;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -140,9 +141,25 @@ class AuthController extends Controller
         return view('auth.email_sent', ['email' => $user->email]);
     }
 
-    public function new_user_confirmation($token): void
+    public function new_user_confirmation($token): View
     {
-        echo "new_user_confirmation";
+       //verificar se o token e valido
+        $user = User::where('token', $token)->first();
+        if (!$user) {
+            redirect()->route('login');
+        }
+
+        // confirmar o registo do usuario
+        $user->email_verified_at = Carbon::now();
+        $user->token = null;
+        $user->active = true;
+        $user->save();
+
+        // autenticação automatica login do usuarui confirmado
+        Auth::login($user);
+
+        // apresenta uma mensagem de sucesso
+        return view('auth.new_user_confirmation');
     }
 
     public function logout(): RedirectResponse {
