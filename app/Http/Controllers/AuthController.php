@@ -214,4 +214,34 @@ class AuthController extends Controller
         return redirect()->route('profile')->with('success', 'A senha foi alterada com sucesso!');
     }
 
+    public function forgot_password(): View {
+        return view('auth.forgot_password');
+    }
+
+    public function send_reset_password_link(Request $request): RedirectResponse|View {
+        // form validation
+        $request->validate([
+            'email' => 'required|email'
+        ],
+        [
+            'email.required' => 'O campo :attribute e obrigatorio',
+            'email.email' => 'O email deve ser um endereço de email válido',
+        ]
+        );
+
+        $generic_message = "verifique a sua caixa de correio para prossequi com arecuperaçao de senha";
+
+        //verificar se email existe
+        $user = User::where('email', $request->email)->first();
+        if(!$user) {
+            return back()->with([
+                'server_error' => $generic_message,
+            ]);
+        }
+        //...
+        return back()->with([
+            'server_error' => $generic_message,
+        ]);
+    }
+
 }
