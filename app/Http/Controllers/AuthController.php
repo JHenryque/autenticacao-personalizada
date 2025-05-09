@@ -172,8 +172,46 @@ class AuthController extends Controller
         return view('auth.profile');
     }
 
-    public function change_password(Request $request): View {
-        dd($request->all());
+    public function change_password(Request $request): RedirectResponse|View {
+        //  form validacao
+        $request->validate(
+            [
+                'current_password' => 'required|min:8|max:30|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                'new_password' => 'required|min:8|max:30|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/|different:current_password',
+                'new_password_confirmation' => 'required|same:new_password',
+            ],
+            [
+                'current_password.required' => 'campo :attribute e obrigatorio',
+                'current_password.min' => ' O :attribute precisa ter pelo menos :min numero ',
+                'current_password.max' => 'O :attribute precisa ter no maximo :max numero ',
+                'current_password.regex' => 'A :attribute deve conter pelo menos uma letra maiúscula, uma letra minúscula, e um numero ',
+                'new_password.required' => 'campo :attribute e obrigatorio',
+                'new_password.min' => ' O :attribute precisa ter pelo menos :min numero ',
+                'new_password.max' => 'O :attribute precisa ter no maximo :max numero ',
+                'new_password.regex' => 'A :attribute deve conter pelo menos uma letra maiúscula, uma letra minúscula, e um numero ',
+                'new_password.different' => 'O campo :attribute deve ser diferente de :other ',
+                'new_password_confirmation.required' => 'O campo :attribute e obrigatorio',
+                'new_password_confirmation.same' => 'A confirmação da senha não corresponde igual a senha .',
+
+            ]
+        );
+        // verificar se a password atual current_password estar correto
+        if (!password_verify($request->current_password, Auth::user()->password)) {
+            return back()->with([
+                'server_error' => 'A senha atual nao esta correta',
+            ]);
+        }
+
+        // atualizar a senha na base de dados
+        $user = Auth::user();
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        // atualizar a password no sessão
+        Auth::user()->password = $request->new_password;
+
+        // apresentar uma mensagem de sucesso
+        return redirect()->route('profile')->with('success', 'A senha foi alterada com sucesso!');
     }
 
 }

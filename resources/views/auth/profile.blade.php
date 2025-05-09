@@ -45,6 +45,12 @@
                     </div>
                 @endif
 
+                @if(session('success'))
+                    <div class="alert alert-success text-center mt-3">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>
