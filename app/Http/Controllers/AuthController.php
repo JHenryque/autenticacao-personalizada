@@ -304,4 +304,33 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'A senha foi alterada com sucesso!');
 
     }
+
+    public function delete_account(Request $request): RedirectResponse
+    {
+        // validaçao formuralio
+        $request->validate([
+            'delete_confirmation' => 'required|in:ELIMINAR',
+        ],
+        [
+            'delete_confirmation.required' => 'O campo :attribute e obrigatorio',
+            'delete_confirmation.in' => 'E obrigatorio escrever a palavra ELIMINAR com as letras maiúscula',
+        ]);
+
+        echo 'ok';
+        // remover a conta se usuário (hard delete ou soft delete
+
+        // soft delete
+        $user = Auth::user();
+        $user->delete();
+
+        // hard delete
+        // $user = Auth::user();
+        // $user->forceDelete():
+
+        // logout
+        Auth::logout();
+
+        // redirect para login
+        return redirect()->route('login')->with(['account_delete'=> true]);
+    }
 }

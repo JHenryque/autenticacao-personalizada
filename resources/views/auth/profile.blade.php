@@ -51,6 +51,22 @@
                     </div>
                 @endif
 
+                <hr>
+
+                <div class="card border-1 border-danger p-5 text-center">
+                    se pretender remover a sua conta de usúario de froma permanete, escreve o texo "Eliminar" em Baixo
+                    <form action="{{ route('delete_account') }}" method="post">
+                        @csrf
+                        <div class="my-3">
+                            <input type="text" class="form-control text-center" name="delete_confirmation">
+                            @error('delete_confirmation')
+                                <div class="text-danger">{{$message}}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-danger">Excluir Conta</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>

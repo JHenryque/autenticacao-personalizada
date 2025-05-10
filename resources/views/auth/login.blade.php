@@ -45,11 +45,17 @@
                     </div>
                 @endif
 
-                    @if(session('success'))
-                        <div class="alert alert-success text-center p-2">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                @if(session('success'))
+                    <div class="alert alert-success text-center p-2">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('account_delete'))
+                    <div class="alert alert-success text-center p-2">
+                        Conta de usuário removida com sucesso.
+                    </div>
+                @endif
 
                 </div>
             </div>
